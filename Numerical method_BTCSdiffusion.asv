@@ -1,0 +1,91 @@
+
+clear all
+clc;
+
+% solution of diffusion equation(Tt=aTxx) using BTCS method
+a=0.01;dx=0.1;dt=0.1;
+d=a*dt/(dx^2);
+l=1;
+disp('--------------------------------------------------------')
+ t=1;
+     
+ 
+ 
+ 
+ BTCS = zeros ((l/dx)-1,1);
+ 
+ 
+ T = zeros((l/dx)+1,(t/dt)+1);
+ disp('---------------------Boundary condition--------------------------');  
+ for j=1:(t/dt)+1
+         for i=1:(l/dx)+1
+            if j==1  
+                if i<6
+                    T(i,j)=200*dx*(i-1);
+            end;
+            end;
+                if i>5
+        T(i,1)=200*(1-dx*(i-1));
+            end;
+            end;
+            if i==1 
+                T(1,j)=0;
+            end;
+            if i==(l/dx)+1 
+                T((l/dx)+1,j)=0;
+            end;
+ end
+disp('----------------------A matrice-----------------------')
+ % in each specific programm A matrix is constant
+
+ 
+ A = zeros((l/dx)-1,(t/dt)-1);
+
+for j=1:(t/dt)-1
+      
+        for i=1:(l/dx)-1
+             
+            if i==j
+                A(i,i) = 2*d+1;
+            end
+          
+            if j==i+1
+                A(i,j) = -1*d;
+                A(j,i) = -1*d;
+            end
+        end
+
+ end
+   A(:,:);         
+
+            k = zeros((l/dx)-1,1);
+            
+
+            for j=1:(t/dt)-1
+                for i=1:(l/dx)-1
+                    if (i==1)
+                        k(i,1) = T(i+1,j)+ d * T(i,j+1);
+                    end
+                    if (i==(l/dx)-1)
+                        k(i,1) = T((l/dx),j) + d * T((l/dx)+1,j+1);
+                    end
+
+                    if ((i>1) && (i<(l/dx-1)))
+                        k(i,1) = T(i+1,j);
+                    end
+                end
+
+                
+                
+                
+
+                BTCS =inv(A'*A)*A'*k;
+
+                for ii=1:l/dx-1
+                    T(ii+1,j+1)=BTCS(ii,1);
+                end
+
+            end
+
+         plot(T)
+

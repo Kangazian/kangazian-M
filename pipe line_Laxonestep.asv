@@ -1,0 +1,44 @@
+%ONe step The modified forward - time Centeral-Space Method for Solution of ft+ufx=0
+%d<=0.5
+
+clear all
+clc
+
+a=0.01;dx=0.1;dt=0.5;
+u=0.1;
+c=u*dt/(dx);
+l=1;
+
+for t=1:2
+
+     for j=1:(t/dt)+1
+    for i=1:(l/dx)+1
+       
+            if j==1  
+                if i<6
+                T(i,j)=200*dx*(i-1);
+            end;end;
+            if j==1  
+                if i>5
+                T(i,j)=200*(1-dx*(i-1));
+            end;
+            end;
+        if i==1 
+                T(i,j)=0;
+            end;
+            if i==(l/dx)+1 
+                T(i,j)=0;
+            end;
+        end
+     end;
+end;
+
+for t=1:2
+    for j=1:(t/dt)-1
+       for i=1:(l/dx)-1    
+            T(i+1,j+1)=0.5*(T(i+2,j)+T(i+1,j))-0.5*c*(T(i+2,j)-T(i,j));
+        end;
+    end;
+    
+end;
+T(:,:)

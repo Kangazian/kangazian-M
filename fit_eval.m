@@ -1,0 +1,10 @@
+function [max_fit,opt_sol,fittness,avr_fit] = fit_eval(position,np)
+ x = position(:,1);
+ y = position(:,2);
+for i = 1:np  
+    fittness(i) = (1+cos(2*pi*x(i)*y(i)))*exp(-(abs(x(i))+abs(y(i)))/3);
+end
+[max_fit,max_loc] = max(fittness);
+opt_sol = position(max_loc,:);
+avr_fit = mean(fittness);
+return

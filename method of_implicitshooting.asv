@@ -1,0 +1,36 @@
+%oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+%oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+%ooooooooooooooooooooShooting method by implicit Eulerooooooooooooooooooooo
+%oooooooooooooooooooooooooAY"+BY'+CY=Doooooooooooooooooooooooooo
+k=4;
+m=l/dx;
+a=
+b=
+c=
+d=
+u(1,2)=0;
+u(1,1)=1;
+Tb(1,1)=0;
+for j=1:k-1
+   Tb(1,j)=0;
+    if j>2
+   slope1=(Tb(m+1,j-1)-Tb(m+1,j-2))/(u(1,j-1)-u(1,j-2));
+   u(1,j)=u(1,j-1)+((T2-Tb(m+1,j-1))/slope1);
+   for i=1:m
+      if abs(Tb(i,j)-T2)< 0.0001 
+              implicitsolutionTb=Tb(i,j);
+              break
+            end     
+         Tb(i+1,j)=(Tb(i,j)+u(i,j)*dx)/(1+c*(dx^2));
+        u(i+1,j)=u(i,j)+(1/a)*(-c*dx*Tb(i,j)+d-b*u(i,j))/(1+c*(dx^2));
+        end
+    end
+       if j<=2
+ for i=1:m     
+       Tb(i+1,j)=((Tb(i,j)+u(i,j)*dx)/(1+c*(dx^2)));
+        u(i+1,j)=(u(i,j)+(1/a)*(-c*dx*Tb(i,j)+d-b*u(i,j))/(1+c*(dx^2));
+        end
+    end
+    
+end
+implicitsolutionTb=Tb(:,3)

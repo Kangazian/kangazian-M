@@ -1,0 +1,42 @@
+clear all
+clc
+
+%solution of diffusion equation Tt=aTxx using FtCS method
+a=0.01;dx=0.1;dt=0.1;
+d=a*dt/(dx^2);
+l=1;
+% for t=1:2
+
+     for j=1:11
+    for i=1:(l/dx)+1
+       
+            if j==1  
+                if i<6
+                T(i,j)=200*dx*(i-1);
+            end;end;
+            if j==1  
+                if i>5
+                T(i,j)=200*(1-dx*(i-1));
+            end;end;
+            if i==1 
+                T(i,j)=0;
+            end;
+            if i==(l/dx)+1 
+                T(i,j)=0;
+            end;
+        end
+end
+
+ 
+    for j=1:10
+       for i=1:(l/dx)-1    
+            T(i+1,j+1)=T(i+1,j)+d*(T(i+2,j)-2*T(i+1,j)+T(i,j));
+        end;
+    end;
+
+ plot(T)
+
+
+
+
+

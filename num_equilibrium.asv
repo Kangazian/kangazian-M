@@ -1,0 +1,61 @@
+%oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+%oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+%ooooooooooooooooooooThe equilibrium (Boundary-Value)Methodooooooooooooooo
+%oooooooooooooooooooooooooooooA*Y"+BY'+CY=Dooooooooooooooooooooooooooooooooo
+clc
+clear all
+s=[];
+l=1;
+a=1;
+b=0;
+c=-16;
+d=0;
+T1=0;
+T2=100;
+dx=0.25;
+f=l/dx;
+equilibrhiumsolution=zeros(f+1,1);
+equilibrhiumsolution(f+1,1)=T2;
+equilibrhiumsolution(1,1)=T1;
+for j=1:f-1
+    for i=1:f-1
+        if i==j
+            g(i,j)= -(2*a - c*dx^2);
+%         g(f+1,f+1)=-(2+16*dx^2);
+        end
+if i==j+1
+g(j+1,j)=a+(b*dx/2);
+            g(j,j+1)= a -0.5*dx*b;
+        end;
+         if i<j+1&i>j+1
+        g(i,j)=0;
+         end;
+         end;
+end;
+
+for j=1:f-1
+    
+    if j==1
+    s(1,1)= d*(dx^2)-(a-(b*dx/2))*T1;
+    else   
+        if j==f-1
+    s(f-1,1)=d*(dx^2)+(a+(b*dx/2))*T2;
+    s(1,1)= d*(dx^2)-(a-(b*dx/2))*T1;
+    else
+    if 1<j<f-1 
+        s(j,1)=d*(dx^2);
+    else
+end;
+        end;
+    end;
+g;
+
+s;
+equilibrhiumT=inv(g)*s;
+
+for i=2:f
+  
+equilibrhiumsolution(i,1)=equilibrhiumT(i-1,1);
+     
+end;
+equilibrhiumsolution

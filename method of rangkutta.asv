@@ -1,0 +1,159 @@
+%Shooting method
+
+%range-kutta solution ay''+by'+cy=d
+
+% function Ta = rang(a,b,c,d,dx,T1,T2,f1,f2);
+
+clc
+clear all
+
+T1=0;
+T2=1;
+l=1;
+dx=0.5;
+a=1;
+b=0;
+c=-1;
+d=0;
+n=l/dx;
+u=zeros(n+1,n+1);
+Ta=zeros(n+1,n+1);
+
+u(1,1)=0;
+u(1,2)=1.8;
+
+Ta(1,1)= T1;
+Ta(1,2)= T1;
+Ta(1,3)= T1;    
+
+for i=1:n
+
+    dt1=dx*u(i,1);
+
+    du1= (dx/a)*(d-(c*Ta(i,1))-(b*u(i,1)));
+
+    dt2= dx*(u(i,1)+0.5*du1);
+
+    du2= (dx/a)*(d-(c*(Ta(i,1)+0.5*dt1))-(b*(u(i,1)+0.5*du1)));
+
+    dt3= dx*(u(i,1)+0.5*du2);
+
+    du3=(dx/a)*(d-(c*(Ta(i,1)+ 0.5*dt2))-b*(u(i,1)+0.5*du2));
+
+    dt4=dx*(u(i,1)+du3);
+
+    du4=(dx/a)*(d-(c*( Ta(i,1)+ dt3))-(b*(u(i,1)+du3)));
+    
+    Ta(i+1,1)=Ta(i,1)+((1/6)*(dt1+(2*dt2)+(2*dt3)+dt4));
+    U(i+1,1)=u(i,1)+((1/6)*(du1+(2*du2)+(2*du3)+du4));
+end
+
+ for i=1:n
+
+            dtt1=dx*u(i,2);
+           
+            duu1=(dx/a)*(d-(c*Ta(i,2))-(b*u(i,2)));
+
+            dtt2= dx*(u(i,2)+0.5*duu1);
+
+            duu2= (dx/a)*(d-(c*(Ta(i,2)+0.5*dtt1))-(b*(u(i,2)+0.5*duu1)));
+
+            dtt3= dx*(u(i,2)+ 0.5*duu2);
+
+            duu3=(dx/a)*(d-(c*(Ta(i,2)+0.5*dtt2))-(b*(u(i,2)+0.5*duu2)));
+
+            dtt4=dx*(u(i,2)+duu3);
+
+            duu4=(dx/a)*(d-(c*(Ta(i,2)+ dtt3))-(b*(u(i,2)+duu3)));
+            
+            Ta(i+1,2)=Ta(i,2)+((1/6)*(dtt1+(2*dtt2)+(2*dtt3)+dtt4));
+            U(i+1,2)=u(i,2)+((1/6)*(duu1+(2*duu2)+(2*duu3)+duu4));
+ end
+
+
+            slope=(Ta(n+1,2)-Ta(n+1,1))/(u(1,2)-u(1,1));
+            u(1,3)=u(1,2)+((T2-Ta(n+1,2))/slope);
+
+   for i=1:n
+       
+            dttt1=dx*u(i,3);
+
+            duuu1=(dx/a)*(d-(c*Ta(i,3))-(b*u(i,3)));
+
+            dttt2= dx*((u(i,3)+0.5*duuu1));
+
+            duuu2= (dx/a)*(d-(c*(Ta(i,3)+0.5*dttt1))-(b*(u(i,3)+0.5*duuu1)));
+
+            dttt3= dx*(u(i,3)+0.5*duuu2);
+
+            duuu3= (dx/a)*(d-(c*(Ta(i,3)+0.5*dttt2))-(b*(u(i,3)+0.5*duuu2)));
+
+            dttt4= dx*(u(i,3)+duuu3);
+
+            duuu4=(dx/a)*(d-(c*(Ta(i,3)+dttt3))-(b*(u(i,3)+duuu3)));
+
+            Ta(i+1,3) = Ta(i,3)+((1/6)*(dttt1+(2*dttt2)+(2*dttt3)+dttt4));
+            U(i+1,3)  = u(i,3)+((1/6)*(duuu1+(2*duuu2)+(2*duuu3)+duuu4));
+   end
+
+
+   Ta(:,3)
+%          slope=(Ta(n+1,2)-Ta(n+1,1))/(u(1,2)-u(1,1));
+%             u(1,3)=u(1,2)+((T2-Ta(n+1,2))/slope);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

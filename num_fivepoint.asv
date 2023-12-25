@@ -1,0 +1,91 @@
+
+%====== Finite Difference Solution of the laplace equation using Five-point approximation method  ====
+%Txx+Tyy=0;
+clc
+clear
+%====================== initial boundary=================
+x =10;%length of the plane  
+
+y =15;  %heigh of the plane 
+delx =0.25;  %deltaX 
+dely =0.25; %delta Y 
+TR =0; %temprature of the right side of the plane 
+TL=0;  %temprature of the left side of the plane
+TD =0; %temprature of the lower side of the plane
+nx = x/delx;% tedade noghat roye mehvare x
+ny = y/dely;
+%==estimation of temprature of the top side of the plane ==
+for i=1:nx
+TU(i)=100*sin(pi*i*delx/10);
+end
+%------------------------------------------------------------------
+%==================(A*TT=B)(tashkile matrice zarayeb (A) )=========
+A = diag(-4*ones(1,(nx-1)*(ny-1)));
+for i=2:(nx-1)*(ny-1)-1
+A(i,i+1)=1;
+A(i,i-1)=1;
+if i-(ny-1)>0 & i+(ny-1)<=(nx-1)*(ny-1)
+A(i,i-(ny-1))=1;
+A(i,i+(ny-1))=1;
+end
+end
+A(1,2)=1;
+for i=1:ny-1
+A(i,i+(ny-1))=1;
+end
+A((nx-1)*(ny-1),(nx-1)*(ny-1)-1)=1;
+for i=(nx-1)*(ny-2):(nx-1)*(ny-1)
+A(i,i-(ny-1))=1;
+end
+for i=1:nx-2
+A(i*(ny-1),i*(ny-1)+1)=0;
+A(i*(ny-1)+1,i*(ny-1))=0;
+end
+%================================================================
+%===============(A*TT=B tashkile matrice javab )=================
+%================================================================
+B = zeros((nx-1)*(ny-1),1);
+%=====================shrayeta marzie noghate gusheh===============
+B(1)=-(TL+TD);
+B(ny-1)=-(TL+TU(1));
+B((nx-2)*(ny-1)+1)=-(TD+TR);
+B((nx-1)*(ny-1))=-(TR+TU(1));
+%===================== boundary condition =======================
+B(2:ny-2)=-TL;
+B(ny:ny-1:(nx-3)*ny)=-TD;
+B((nx-2)*(ny-1)+1:(nx-1)*(ny-1)-1)=-TR;
+B(2*(ny-1):(ny-1):(nx-2)*(ny-1))=-TU(2:(nx-2));
+%----------------------------------------------------------------
+%============ mohasebeye dama dar shabakeye mesh bandi shode========
+%----------------------------------------------------------------
+TT=inv(A'*A)*(A'*B);
+T=zeros(ny-1,nx-1);
+T(:,1)=TT((ny-1):-1:1,1);
+for i=2:(nx-1)
+T(:,i)=TT(((i-1)*(ny-1))+(ny-1):-1:((i-1)*(ny-1))+1,1);
+end
+%====ezafe kardane shrayeet marzi be shabakeye mesh bandi shode====
+Ttotal=zeros(ny+1,nx+1);
+Ttotal(1,:) = [TL(1) TU(1:nx-1) TR(1) ];
+Ttotal(ny+1,:) =TD;
+Ttotal(:,1) = TL;
+Ttotal(:,nx+1) = TR;
+Ttotal(2:ny,2:nx)=T;
+disp('==============(A*TT=B)(tashkil matrixe zarayb)==========')
+A=A'
+disp('=====(A*TT=B)(tashkil matrixe javab br hasb dama atraf)==')
+B=B'
+TT=TT'
+disp('---------------------------------------------------------')
+disp('=====natayeje nahaee dama dar shabakeye mesh bandi shode=')
+disp('---------------------------------------------------------')
+Ttotal=Ttotal
+disp('---------------------------------------------------------')
+%---------------------------------------------------------------
+%==========================plot of results======================
+%---------------------------------------------------------------
+figure;[cs,h]=contourf(flipud(Ttotal),[1 2 5 10 20 50 100]);
+clabel(cs,h);
+xlabel('X (m)')
+ylabel('Y (m)')
+title('Five-point approximation of the laplace equation')
